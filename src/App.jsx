@@ -1,4 +1,7 @@
-import Flashcard from "./Components/Flashcard"
+import { styled } from "styled-components"
+import BottomBar from "./Components/BottomBar"
+import FlashcardsContainer from "./Components/FlashcardsContainer"
+import Logo from "./Components/Logo"
 
 const cards = [
 	{ question: "O que é JSX?", answer: "Uma extensão da linguagem JavaScript" },
@@ -11,13 +14,28 @@ const cards = [
 	{ question: "Usamos estado (state) para __", answer: "Dizer para o React quais informações quando atualizadas devem renderizar a tela novamente" }
 ]
 
+const StyledApp = styled.div`
+  width: 100vw;
+  padding-top: 40px;
+  padding-bottom: 170px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 25px;
+
+  background-color: #FB6B6B;
+`
 
 function App() {
 
   return (
-    <>
-      <Flashcard id={1} data={cards[3]}></Flashcard>
-    </>
+    <StyledApp>
+      <Logo></Logo>
+      <FlashcardsContainer fcArr={cards}></FlashcardsContainer>
+      <BottomBar finishedCount={1} length={2} flashcardsModes={["pass", "almost"]}></BottomBar>
+    </StyledApp>
   )
 }
 
