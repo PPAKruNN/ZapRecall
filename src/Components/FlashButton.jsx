@@ -45,9 +45,9 @@ const messages = {
     "pass": "Zap!"
 }
 
-export default function FButton({mode}) {
+export default function FButton({mode, onClick}) {
     return (
-        <StyledButton $mode={mode}>
+        <StyledButton onClick={onClick} $mode={mode}>
             <Text>{messages[mode]}</Text>
         </StyledButton>
     )

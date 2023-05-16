@@ -1,7 +1,11 @@
-import { styled } from "styled-components"
+import { css, styled } from "styled-components"
 import FButton from "./FlashButton"
-import play from "../../public/assets/seta_play.png"
-import virar from "../../public/assets/seta_virar.png"
+import play from "../assets/seta_play.png"
+import virar from "../assets/seta_virar.png"
+import pass from "../assets/icone_certo.png"
+import almost from "../assets/icone_quase.png"
+import fail from "../assets/icone_erro.png"
+import { useState } from "react"
 
 const Hid = styled.div`
     width: 300px;
@@ -22,7 +26,30 @@ const Title = styled.h1`
     font-family: "recursive", sans-serif;
     font-size: 16px;
     font-weight: 700;
-    color: #333;
+    text-decoration: line-through;
+    ${ (info) => {
+        const mode = info.$mode
+        switch(mode)
+        {
+            case "pass":
+                return css`
+                    color: #2BFE34;
+                ` 
+            case "almost":
+                return css`
+                    color: #FF922E;
+                ` 
+            case "fail":
+                return css`
+                    color: #FF3030;
+                ` 
+            default:
+                return css`
+                    color: #333;
+                    text-decoration: none;
+                `
+        }
+    }}
 `
 const Content = styled.div`
     width: 300px;
@@ -54,7 +81,7 @@ const ContentText = styled.p`
 `
 
 const PlayButton = styled.img`
-    width: 20px;
+    width: 23px;
     height: 23px;
 `
 
@@ -74,31 +101,81 @@ const ButtonsBox = styled.div`
     box-sizing: border-box;
 `
 
-export default function Flashcard(){
+const icons = {
+    play,
+    pass,
+    almost,
+    fail
+}
+
+// eslint-disable-next-line react/prop-types
+export default function Flashcard({id, data: {question, answer}}){
+
+    const [state, setState] = useState("base");
+    //  base
+    //  question
+    //  answer
+    const [mode, setMode] = useState("play")
+    //  play
+    //  pass
+    //  almost
+    //  fail
+
+    function changeMode(_mode) {
+        console.log("asdasdas")
+        setMode(_mode);
+        setState("base");
+    }
+
+    function changeState() {
+        if(mode != "play") return;
+        setState("question");
+    }
+
+    function evaluateState() {
+        if(state == "base")
+        {
+            return (
+                <Hid>
+                    <Title $mode={mode}>Pergunta {id}</Title>
+                    <PlayButton onClick={() => changeState("question")} src={icons[mode]}></PlayButton>
+                </Hid>  
+            )
+        }
+
+        if(state == "question") 
+        {
+            return (
+                <Content>
+                    <ContentText>
+                        {question}
+                    </ContentText>
+                    <FlipButton onClick={() => setState("answer")} src={virar}></FlipButton>
+                </Content>
+            )
+        }
+
+        if(state == "answer")
+        {
+            return (
+                <Content>
+                    <ContentText>
+                        {answer}
+                    </ContentText>
+                    <ButtonsBox>
+                        <FButton onClick={() => changeMode("fail")} mode="fail"></FButton>
+                        <FButton onClick={() => changeMode("almost")} mode="almost"></FButton>
+                        <FButton onClick={() => changeMode("pass")} mode="pass"></FButton>
+                    </ButtonsBox>
+                </Content>
+            )
+        }
+    }
+
 
     return (
         <>
-            <Hid>
-                <Title>Pergunta 1</Title>
-                <PlayButton src={play} ></PlayButton>
-            </Hid>  
-            <Content>
-                <ContentText>
-                    Qual o nome do criador do React??
-                </ContentText>
-                <FlipButton src={virar}></FlipButton>
-            </Content>
-
-            <Content>
-                <ContentText>
-                    Markinho zoquerbergue
-                </ContentText>
-                <ButtonsBox>
-                    <FButton mode="fail"></FButton>
-                    <FButton mode="almost"></FButton>
-                    <FButton mode="pass"></FButton>
-                </ButtonsBox>
-            </Content>
+            {evaluateState()}
         </>
     )
 }
