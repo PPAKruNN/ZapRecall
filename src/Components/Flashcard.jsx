@@ -134,13 +134,13 @@ export default function Flashcard({id, AppFCState: {flashCards, setFlashCards}, 
     }
 
     function updateAppState(_mode, _state) {
-        const obj = {...flashCards}
+        const obj = {...flashCards.fc}
         obj[id] = {_mode, _state}
-        setFlashCards(obj);
+        setFlashCards({fc: obj});
     }
 
     function evaluateState() {
-        if(flashCards[id] === undefined)
+        if(flashCards.fc[id] === undefined)
         {
             updateAppState(mode, state);
         }
