@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { css, styled } from "styled-components"
 import FButton from "./FlashButton"
 import play from "../assets/seta_play.png"
@@ -124,7 +125,7 @@ export default function Flashcard({id, AppFCState: {flashCards, setFlashCards}, 
     function changeMode(_mode) {
         setMode(_mode);
         setState("base");
-        updateAppState(_mode, "base");
+        updateAppState(_mode, "base", id);
     }
 
     function changeState(str) {
@@ -133,10 +134,18 @@ export default function Flashcard({id, AppFCState: {flashCards, setFlashCards}, 
         updateAppState(mode, str);
     }
 
-    function updateAppState(_mode, _state) {
+    function updateAppState(_mode, _state, indexToAddToFila = undefined) {
         const obj = {...flashCards.fc}
         obj[id] = {_mode, _state}
-        setFlashCards({fc: obj});
+
+        if(indexToAddToFila != undefined)
+        {
+            const arr = [...flashCards.fila];
+            arr.push(indexToAddToFila);
+            return setFlashCards({fc: obj, fila: arr});
+        }
+
+        setFlashCards({fc: obj, fila: flashCards.fila});
     }
 
     function evaluateState() {

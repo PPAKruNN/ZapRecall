@@ -31,18 +31,23 @@ const StyledApp = styled.div`
 
 function App() {
 
-  const [flashCards, setFlashCards] = useState({fc: {}});
+  const [flashCards, setFlashCards] = useState({fc: {}, fila: []});
   console.log(flashCards)
 
   function evaluateFinishedFCs() {
     return Object.values(flashCards.fc).filter( fc => fc._mode != "play").length;
   }
 
+  function getIcons() {
+    if(flashCards.fila.length === 0) return [];
+    return flashCards.fila.map( id => Object.values(flashCards.fc)[id]._mode);
+  }
+
   return (
     <StyledApp>
       <Logo></Logo>
       <FlashcardsContainer AppFCState={ {flashCards, setFlashCards} } fcArr={cards}></FlashcardsContainer>
-      <BottomBar finishedCount={evaluateFinishedFCs()} length={Object.keys(flashCards.fc).length} flashcardsModes={["pass", "almost"]}></BottomBar>
+      <BottomBar finishedCount={evaluateFinishedFCs()} length={Object.keys(flashCards.fc).length} flashcardsModes={getIcons()}></BottomBar>
     </StyledApp>
   )
 }
