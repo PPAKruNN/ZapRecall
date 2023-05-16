@@ -11,13 +11,13 @@ const Container = styled.div`
     gap: 25px;
 `
 
-export default function FlashcardsContainer({fcArr}) {
+export default function FlashcardsContainer({AppFCState: {flashCards, setFlashCards}, fcArr}) {
 
     return  (
         <Container>
             {fcArr.map( (fc, index) => {
                 return (
-                    <Flashcard key={index} id={index} data={fc}> </Flashcard>
+                    <Flashcard AppFCState={{flashCards, setFlashCards}} key={index} id={index} data={fc}> </Flashcard>
                 )
             })}
 

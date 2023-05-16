@@ -109,7 +109,7 @@ const icons = {
 }
 
 // eslint-disable-next-line react/prop-types
-export default function Flashcard({id, data: {question, answer}}){
+export default function Flashcard({id, AppFCState: {flashCards, setFlashCards}, data: {question, answer}}){
 
     const [state, setState] = useState("base");
     //  base
@@ -122,22 +122,34 @@ export default function Flashcard({id, data: {question, answer}}){
     //  fail
 
     function changeMode(_mode) {
-        console.log("asdasdas")
         setMode(_mode);
         setState("base");
+        updateAppState(_mode, "base");
     }
 
-    function changeState() {
+    function changeState(str) {
         if(mode != "play") return;
-        setState("question");
+        setState(str);
+        updateAppState(mode, str);
+    }
+
+    function updateAppState(_mode, _state) {
+        const obj = {...flashCards}
+        obj[id] = {_mode, _state}
+        setFlashCards(obj);
     }
 
     function evaluateState() {
+        if(flashCards[id] === undefined)
+        {
+            updateAppState(mode, state);
+        }
+
         if(state == "base")
         {
             return (
                 <Hid>
-                    <Title $mode={mode}>Pergunta {id}</Title>
+                    <Title $mode={mode}>Pergunta {id + 1}</Title>
                     <PlayButton onClick={() => changeState("question")} src={icons[mode]}></PlayButton>
                 </Hid>  
             )
@@ -150,7 +162,7 @@ export default function Flashcard({id, data: {question, answer}}){
                     <ContentText>
                         {question}
                     </ContentText>
-                    <FlipButton onClick={() => setState("answer")} src={virar}></FlipButton>
+                    <FlipButton onClick={() => changeState("answer")} src={virar}></FlipButton>
                 </Content>
             )
         }
@@ -172,10 +184,10 @@ export default function Flashcard({id, data: {question, answer}}){
         }
     }
 
-
     return (
         <>
             {evaluateState()}
+            
         </>
     )
 }

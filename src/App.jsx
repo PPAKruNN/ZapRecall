@@ -2,6 +2,7 @@ import { styled } from "styled-components"
 import BottomBar from "./Components/BottomBar"
 import FlashcardsContainer from "./Components/FlashcardsContainer"
 import Logo from "./Components/Logo"
+import { useState } from "react"
 
 const cards = [
 	{ question: "O que é JSX?", answer: "Uma extensão da linguagem JavaScript" },
@@ -30,11 +31,18 @@ const StyledApp = styled.div`
 
 function App() {
 
+  const [flashCards, setFlashCards] = useState({});
+  console.log(flashCards)
+
+  function evaluateFinishedFCs() {
+    return Object.values(flashCards).filter( fc => fc._mode != "play").length;
+  }
+
   return (
     <StyledApp>
       <Logo></Logo>
-      <FlashcardsContainer fcArr={cards}></FlashcardsContainer>
-      <BottomBar finishedCount={1} length={2} flashcardsModes={["pass", "almost"]}></BottomBar>
+      <FlashcardsContainer AppFCState={ {flashCards, setFlashCards} } fcArr={cards}></FlashcardsContainer>
+      <BottomBar finishedCount={evaluateFinishedFCs()} length={Object.keys(flashCards).length} flashcardsModes={["pass", "almost"]}></BottomBar>
     </StyledApp>
   )
 }
