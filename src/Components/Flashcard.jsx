@@ -109,6 +109,13 @@ const icons = {
     fail
 }
 
+const iconsDatatests = {
+    play: "play-btn",
+    pass: "zap-icon",
+    almost: "partial-icon",
+    fail: "no-icon",
+}
+
 // eslint-disable-next-line react/prop-types
 export default function Flashcard({id, AppFCState: {flashCards, setFlashCards}, data: {question, answer}}){
 
@@ -157,9 +164,9 @@ export default function Flashcard({id, AppFCState: {flashCards, setFlashCards}, 
         if(state == "base")
         {
             return (
-                <Hid>
-                    <Title $mode={mode}>Pergunta {id + 1}</Title>
-                    <PlayButton onClick={() => changeState("question")} src={icons[mode]}></PlayButton>
+                <Hid data-test="flashcard">
+                    <Title data-test="flashcard-text" $mode={mode}>Pergunta {id + 1}</Title>
+                    <PlayButton data-test={iconsDatatests[mode]} onClick={() => changeState("question")} src={icons[mode]}></PlayButton>
                 </Hid>  
             )
         }
@@ -167,11 +174,11 @@ export default function Flashcard({id, AppFCState: {flashCards, setFlashCards}, 
         if(state == "question") 
         {
             return (
-                <Content>
-                    <ContentText>
+                <Content data-test="flashcard" >
+                    <ContentText data-test="flashcard-text">
                         {question}
                     </ContentText>
-                    <FlipButton onClick={() => changeState("answer")} src={virar}></FlipButton>
+                    <FlipButton data-test="turn-btn" onClick={() => changeState("answer")} src={virar}></FlipButton>
                 </Content>
             )
         }
@@ -179,8 +186,8 @@ export default function Flashcard({id, AppFCState: {flashCards, setFlashCards}, 
         if(state == "answer")
         {
             return (
-                <Content>
-                    <ContentText>
+                <Content data-test="flashcard" >
+                    <ContentText data-test="flashcard-text" >
                         {answer}
                     </ContentText>
                     <ButtonsBox>

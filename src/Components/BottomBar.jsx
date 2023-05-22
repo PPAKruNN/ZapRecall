@@ -48,7 +48,12 @@ const modes = {
     fail
 }
 
-
+const iconsDatatests = {
+    play: "play-btn",
+    pass: "zap-icon",
+    almost: "partial-icon",
+    fail: "no-icon",
+}
 
 
 export default function BottomBar({length, finishedCount, flashcardsModes}){
@@ -58,26 +63,26 @@ export default function BottomBar({length, finishedCount, flashcardsModes}){
         const isAnyFailed = flashcardsModes.some( curr => curr === "fail");
         if(isAnyFailed) {
             return (
-                <>
+                <div data-test="finish-text"> 
                     <Title> Putz...</Title>
                     <Text>Ainda faltam alguns... Mas não desanime!</Text>
-                </>
+                </div>
             )
             
         }
         else {
             return (
-                <> 
+                <div data-test="finish-text"> 
                     <Title> Parabéns!</Title>
                     <Text>Você não esqueceu de nenhum flashcard!</Text> 
-                </>
+                </div>
             )
         }
         
     }
 
     return(
-        <StyledBottomBar>
+        <StyledBottomBar data-test="footer">
             {finishMessage()}
 
             <Text>{finishedCount + "/" + length + " CONCLUÍDOS"}</Text>
@@ -85,7 +90,7 @@ export default function BottomBar({length, finishedCount, flashcardsModes}){
             <div>  
                 {flashcardsModes.filter(currfc => modes[currfc] != undefined).map( (currfc, index) => {
                     return (
-                        <FcModeIcon key={index} src={modes[currfc]}></FcModeIcon>
+                        <FcModeIcon datatest={iconsDatatests[currfc]} key={index} src={modes[currfc]}></FcModeIcon>
                     )
                 })}
             </div>

@@ -45,9 +45,15 @@ const messages = {
     "pass": "Zap!"
 }
 
+const btnDatatests = {
+    pass: "zap-btn",
+    almost: "partial-btn",
+    fail: "no-btn",
+}
+
 export default function FButton({mode, onClick}) {
     return (
-        <StyledButton onClick={onClick} $mode={mode}>
+        <StyledButton data-test={btnDatatests[mode]} onClick={onClick} $mode={mode}>
             <Text>{messages[mode]}</Text>
         </StyledButton>
     )
